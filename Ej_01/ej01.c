@@ -1,43 +1,22 @@
-#include <stdio.h>
-#include <pthread.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "ej01.h"
 
-void *hilo_1(void * var_local)
-{
+/* Ejercicio 1
+ 
+ * Escriba un programa llamado ej1.c que tenga un único contador y tres hilos para
+ * modificar su valor. Uno de esos hilos, incrementa el contador en 2 en cada iteración y
+ * muestra su valor en pantalla, mientras que los dos hilos restantes, lo decrementa en 1 y
+ * muestra su valor en pantalla. Ejemplo “Hilo 1 incremento el contador al valor de 25”.
 
-    for(int i = 0 ; i < 100; i ++)
-    {
-        printf("Soy el hilo 1, de id: %d; incremento la variable a: %d\n", getpid(), (*(int*) var_local) += 2);
-    }
-    pthread_exit((void *)0);
-}
+    Autor: Gastón Di Filippo
+    Fecha: Viernes 04092020
 
-void *hilo_2(void * var_local)
-{
-    for(int i = 0 ; i < 100; i ++)
-    {
-        
-        printf("Soy el hilo 2, de id: %d; incremento la variable a: %d\n", getpid(), (*(int*) var_local) -= 1);
-    }
-    pthread_exit((void *)0);
-}
-
-void *hilo_3(void * var_local)
-{
-    for(int i = 0 ; i < 100; i ++)
-    {
-        
-        printf("Soy el hilo 3, de id: %d; incremento la variable a: %d\n", getpid(), (*(int*) var_local) -= 1);
-    }
-    pthread_exit((void *)0);
-}
+ */
 
 int main()
 {
     int entero = 1, retval ;
     pthread_t hilos[3];
-
+    printf("Inicializo el 'entero' con el valor de %d\n", entero);
     retval = pthread_create(&hilos[0], NULL, hilo_1, &entero);
     retval = pthread_create(&hilos[1], NULL, hilo_2, &entero);
     retval = pthread_create(&hilos[2], NULL, hilo_3, &entero);
@@ -47,6 +26,6 @@ int main()
         pthread_join(hilos[i], NULL);
     }
 
-    printf("mi pid = %d (Proceso), y entero = %d, fin de experimento.\n", getpid(), entero);
+    printf("Soy el proceso #%d; el valor final de entero = %d, fin de experimento.\n", getpid(), entero);
     return EXIT_SUCCESS;
 }
